@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Estudiantes - SENATI</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo-container">
+            <a href="/" style="display: flex; align-items: center; gap: 15px; text-decoration: none; color: inherit;">
+                <img src="/static/css/images/Senati.png" alt="SENATI" class="logo-senati">
+                <div class="logo-text">
+                    <h1>SENATI</h1>
+                    <p>Gestión de Estudiantes</p>
+                </div>
+            </a>
+        </div>
+
+        <nav class="navbar">
+            <ul>
+                <li><a href="/" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="/cursos_generales"><i class="fas fa-graduation-cap"></i> Mis Cursos</a></li>
+                <li><a href="#"><i class="fas fa-clock"></i> Horario</a></li>
+                <li><a href="#"><i class="fas fa-star"></i> Notas</a></li>
+                <li><a href="https://www.senati.edu.pe/contacto" target="_blank"><i class="fas fa-life-ring"></i> Ayuda</a></li>
+            </ul>
+        </nav>
+
+        <div class="user-profile">
+            <div class="user-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="user-info">
+                <span class="user-name">Admin</span>
+                <span class="user-role">Administrador</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header-panel">
+            <h1>Panel de Control</h1>
+            <div class="top-nav-info">SENATI</div>
+        </header>
+
+        <div class="dashboard-grid">
+            
+            <div class="left-column">
+                <div class="form-box">
+                    <h2>Nuevo Registro de Estudiante</h2>
+                    <form action="/agregar" method="POST" class="grid-form">
+                        <div class="input-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" name="nombre" placeholder="..." required>
+                        </div>
+                        <div class="input-group">
+                            <label>Email Institucional</label>
+                            <input type="email" name="email" placeholder="estudiante@senati.pe" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Carrera</label>
+                            <input type="text" name="carrera" placeholder="Diseño Gráfico" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Nota Final (0-10)</label>
+                            <input type="number" name="nota" step="0.1" min="0" max="10" placeholder="10.0" required>
+                        </div>
+                        <button type="submit" class="btn-full">
+                            <i class="fas fa-plus-circle"></i> Agregar Estudiante al Sistema
+                        </button>
+                    </form>
+                </div>
+
+                <div class="table-box">
+                    <h2>Lista de Estudiantes Matriculados</h2>
+                    <table class="modern-table" id="studentTable">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Carrera</th>
+                                <th>Email</th>
+                                <th>Nota</th>
+                                <th>Ingreso</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for e in estudiantes %}
+                            <tr class="student-row">
+                                <td class="student-name">
+                                    <i class="fas fa-user-circle user-icon"></i> {{ e.nombre }}
+                                </td>
+                                <td class="student-carrera">{{ e.carrera }}</td>
+                                <td>{{ e.email }}</td>
+                                <td><strong>{{ e.nota }}</strong></td>
+                                <td>{{ e.fecha_ingreso }}</td>
+                                <td class="actions-cell">
+                                    <a href="/cursos/{{ e.id }}" class="btn-outline">Ver Cursos</a>
+                                    <form action="/eliminar/{{ e.id }}" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn-icon-del">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+
+            <aside class="right-widgets">
+                <div class="widget-box">
+                    <h3>Acceso Rápido</h3>
+                    <div class="search-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Buscar nombre o carrera...">
+                    </div>
+                    <p class="activity-text"><i class="fas fa-history"></i> Actividad reciente</p>
+                </div>
+            </aside>
+
+        </div> 
+    </main>
+
+    <script>
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll('.student-row');
+
+            rows.forEach(row => {
+                let name = row.querySelector('.student-name').textContent.toLowerCase();
+                let career = row.querySelector('.student-carrera').textContent.toLowerCase();
+                
+                if (name.includes(filter) || career.includes(filter)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

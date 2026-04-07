@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos del Estudiante - SENATI</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo-container">
+            <img src="/static/css/images/Senati.png" alt="SENATI" class="logo-senati">
+            <div class="logo-text">
+                <h1>SENATI</h1>
+                <p>Gestión de Estudiantes</p>
+            </div>
+        </div>
+
+        <nav class="navbar">
+            <ul>
+                <li><a href="/estudiantes"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="#" class="active"><i class="fas fa-graduation-cap"></i> Mis Cursos</a></li>
+                <li><a href="#"><i class="fas fa-clock"></i> Horario</a></li>
+                <li><a href="#"><i class="fas fa-star"></i> Notas</a></li>
+                <li><a href="https://www.senati.edu.pe/contacto" target="_blank"><i class="fas fa-life-ring"></i> Ayuda</a></li>
+            </ul>
+        </nav>
+
+        <div class="user-profile">
+            <div class="user-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="user-info">
+                <span class="user-name"></span>
+                <span class="user-role">Administrador</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header-panel">
+            <h1>Cursos Registrados</h1>
+            <div class="top-nav-info">SENATI</div>
+        </header>
+
+        <div class="table-container">
+            <div class="table-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0;">Detalle de Asignaturas</h2>
+                    
+                    <a href="/estudiantes" class="btn-outline" style="text-decoration: none;">
+                        <i class="fas fa-arrow-left"></i> Volver al Panel
+                    </a>
+                </div>
+
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Curso</th>
+                            <th>Créditos</th>
+                            <th>Semestre</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in cursos %}
+                        <tr>
+                            <td><i class="fas fa-book-open user-icon"></i> {{ c.curso_nombre }}</td>
+                            <td><strong>{{ c.creditos }}</strong> pts</td>
+                            <td><span class="badge-semestre">{{ c.semestre }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
